@@ -6,7 +6,10 @@ import exception.FlightNotFoundException;
 import exception.ServiceNotFoundException;
 import repository.dao.FlightDao;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 public class TouristServiceService {
 
@@ -39,7 +42,23 @@ public class TouristServiceService {
   // Ejercicio 4
   public List<Flight> getFlightsSortedByPriceThenAirline(
       List<String> flightNumbers, FlightDao flightDao) throws FlightNotFoundException {
-    throw new UnsupportedOperationException(
-        "Ejercicio 4: implement getFlightsSortedByPriceThenAirline");
+
+    List<Flight> vuelos = new ArrayList<Flight>();
+
+    for(String number : flightNumbers){
+
+      vuelos.add(flightDao.findByNumber(number).orElseThrow(
+              () -> new FlightNotFoundException("numero de vuelo no encontrado")
+      ));
+
+    }
+
+    vuelos.sort(
+            Comparator.comparingDouble(Flight::calculatePrice)
+                    .thenComparing(Flight::getAirline)
+    );
+
+    return vuelos;
+
   }
 }
