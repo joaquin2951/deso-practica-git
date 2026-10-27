@@ -1,0 +1,68 @@
+GUIA DE TRABAJO para el ejercicio Integrador de DeSo - Hernández Joaquín
+
+Acá les dejo un resumen de lo que tienen que hacer así nos organizamos bien y no nos pisamos código y no commiteamos al main si querer xD.
+
+
+
+Paso A: Clonar el proyecto
+	En su terminal de CMD o GitBash (o lo que usen, yo uso Git Bash) tienen que clonar el proyecto:
+		Primero, se hacen alguna carpeta especial para el ejercicio y luego en la consola hacen "cd" hasta ir a esa carpeta, despues pegan:
+		git clone https://github.com/joaquin2951/deso-practica-git.git
+		Después hacen, en la misma consola:
+		cd deso-practica-git
+		Para ir a la carpeta que clonamos desde GitHub a nuestro repo local.
+
+Paso B: Se hacen una rama de trabajo individual
+	Cada uno va a tener su rama (branch). 
+	Propongo que el nombre de las ramas sea EjX (reemplazando X por el número de ejercicio que le toque a cada uno).
+	Cada uno va a realizar un solo ejercicio. En total, tendremos 5 ejercicios hechos para la entrega.
+	Ejemplo: si te toco el Ejercicio 3
+	git checkout -b Ej3 --> te lleva a la rama Ej3 y el "-b" hace que si no existe, te la cree.
+
+
+-------------IMPORTANTE-----------------------
+PASO C: Seguir Reglas del enunciado y probar test localmente
+	1. Mientras cada uno está programando su ejercicio, segun el enunciado del ejercicio debemos respetar lo siguiente:
+		Respetar reglas clave de la cátedra:
+			* NO cambiar firmas de métodos existentes.
+			* NO tocar clases del paquete domain ni de exception.
+			* NO modificar clases en src/test.
+
+	2. Antes de subir los cambios al repo remoto (nuestro repo en github), compilen y prueben el test desde Maven o IntelliJIDEA con el comando:	mvn clean test
+
+---------------IMPORTANTE---------------------------
+
+
+
+---------------IMPORTANTE---------------------------
+
+PASO D: Subir Cambios a Repo Remoto (PERO A LA RAMA DEL EJERCICIO QUE LES TOCO A CADA UNO, importante esto porfa)
+	comando (!!!! Asegurense de que están parados en SU rama y NO en la main ni en ningun otra !!!!):
+
+			git add .   --> añade todos los cambios al staggin area del Repo LOCAL
+			git commit -m "feat: implementacion ejercicio X (breve descripcion)" --> commitea todos los cambios al Repo LOCAL
+			git push origin EjX --> Manda todos los cambios del Repo LOCAL al repo REMOTO (nuestro repo de GitHub) 
+
+---------------IMPORTANTE---------------------------
+
+
+PASO E: Integrar ramas en el FORK de nuestro grupo
+	Yo me encargo de esta parte, ustedes nomás avisen por WhatsApp cuando hayan completado el PASO D.
+	Despues de que yo mergee alguna rama que ustedes commiteen, probablemente tengamos que ejecutar TODOS en nuestro repo LOCAL los 
+	siguientes comandos: 
+		git checkout main
+		git pull origin main
+	para mantener el repo local actualizado. Pero yo les aviso cuándo mergeo la rama y les recuerdo ejecutar este comando, así que despreocupense.
+
+
+
+
+
+Si llegaste hasta acá, felicitaciones crack!
+
+
+
+
+
+
+
