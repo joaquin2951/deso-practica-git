@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import java.util.Optional;
+
 public class ReservationService {
   private final ReservationDao reservationDao;
   private final UserDao userDao;
@@ -70,7 +72,23 @@ public class ReservationService {
   public List<Reservation> getReservationsByUser(
       List<Reservation> reservations, String username, UserDao userDao)
       throws UserNotFoundException, DataAccessException {
-    throw new UnsupportedOperationException("Ejercicio 1: implement getReservationsByUser");
+
+      Optional<User> resultado_busqueda = userDao.findByUsername(username);
+
+      if(!resultado_busqueda.isPresent()){
+        throw new UserNotFoundException("Usuario " + username + " no encontrado");
+      }
+
+      User usuario = resultado_busqueda.get();
+
+      List<Reservation> lista_final = reservations.stream()
+        .filter(r -> r.getOwner() != null && r.getOwner().getId().equals(usuario.getId()))
+        .sorted((r1, r2) -> Double.compare(r2.calculatePrice(), r1.calculatePrice()))
+        .toList();
+
+      return lista_final;
+
+    //throw new UnsupportedOperationException("Ejercicio 1: implement getReservationsByUser");
   }
 
   // Ejercicio 3
