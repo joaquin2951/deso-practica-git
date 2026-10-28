@@ -1,5 +1,6 @@
 package service;
 
+import domain.Location;
 import domain.User;
 import dto.user.UserResponse;
 import exception.DataAccessException;
@@ -27,8 +28,28 @@ public class UserService {
   // Ejercicio 6
   public User getValidatedUser(String username, UserDao userDao)
       throws UserNotFoundException, IncompleteUserException, DataAccessException {
-    throw new UnsupportedOperationException("Ejercicio 6: implement getValidatedUser");
+    try {
+      User user = userDao.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
+      Location address = user.getAddress();
+      if (address == null) {
+        throw new IncompleteUserException(username);
+      } else {
+        if (
+                address.getCountry() == null || address.getCountry().equals("")
+                        || address.getCity() == null || address.getCity().equals("")
+                        || address.getCountry().isBlank() || address.getCity().isBlank()
+        ) {
+          throw new IncompleteUserException(username);
+        }
+        else {
+          return user;
+        }
+      }
+      } catch (DataAccessException e) {
+      throw e;
+    }
   }
+
 
   // Ejercicio 9
   public List<User> getUsersPresentInFileAndDao(FileUserDao fileUserDao, UserDao userDao)
