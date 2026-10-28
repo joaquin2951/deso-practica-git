@@ -1,8 +1,6 @@
 package service;
 
-import domain.Reservation;
-import domain.TouristService;
-import domain.User;
+import domain.*;
 import dto.reservation.CreateReservationRequest;
 import dto.reservation.ReservationResponse;
 import dto.reservation.ValidationResultDTO;
@@ -23,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ReservationService {
   private final ReservationDao reservationDao;
@@ -100,7 +99,30 @@ public class ReservationService {
 
   // Ejercicio 5
   public Map<String, List<Reservation>> groupReservationsByCountry(List<Reservation> reservations) {
-    throw new UnsupportedOperationException("Ejercicio 5: implement groupReservationsByCountry");
+    return reservations.stream()
+            .filter(r -> { // Filtrar Reservas sin location asignada
+              TouristService service = r.getService();
+              if(service instanceof Accommodation acc){
+                return acc.getLocation() != null && acc.getLocation().getCountry() != null;
+              } else if (service instanceof Flight fli){
+                return fli.getArrivalInfo() != null && fli.getArrivalInfo().getCountry() != null;
+              } else {
+                return false;
+              }
+            })
+            .sorted(Comparator.comparing(Reservation::getDate)) //Ordenar toda la lista por fecha
+            .collect(Collectors.groupingBy(r -> { // Agrupar por pais
+              TouristService service = r.getService();
+              if (service instanceof Accommodation acc){
+                return acc.getLocation().getCountry();
+              } else if (service instanceof Flight fli){
+                return fli.getArrivalInfo().getCountry();
+              } else {
+                return ""; //no deberia llegar aca pq ya se filtro que getCountry no devuelva null
+              }
+            }));
+
+    //throw new UnsupportedOperationException("Ejercicio 5: implement groupReservationsByCountry");
   }
 
   // Ejercicio 7
